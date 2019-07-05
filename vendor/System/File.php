@@ -49,7 +49,7 @@ class File {
      * @return string
      */
     public function toVendor($path) {//to Vendor Folder
-        return $this->to($path);
+        return $this->to('vendor/' . $path);
     }
     /**
      * Generate full path to the given path
@@ -57,7 +57,7 @@ class File {
      * @param string $path
      * @return string
      */
-    public function to($path) {
-        return $this->root . static::DS . str_replace(['/', '\\'], static::DS, $path);
+    public function to($path) {//to any folder other than Vendor Folder
+        return $this->root . static::DS . str_replace(['/', '\\'], static::DS, $path);//will return C:\xampp\htdocs\blog . / or \ . $path (with the right back or forward slash)
     }
 }

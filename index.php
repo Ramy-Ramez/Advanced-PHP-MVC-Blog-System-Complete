@@ -11,6 +11,11 @@ use System\Application;
 use System\File;
 
 $file = new File(__DIR__);//Pass the project directory name
+///echo $file->to('public/images/image.jpg') . ' from index.php<br>';//to test the to() function
+//echo $file->toVendor('System\\Test.php') . ' from index.php<br>';//to test the toVendor() function
+//die;
 $app = new Application($file);//Dependency Injection
 
-new System\Test;
+//new System\Test;//to test the autoloading function in Application.php
+//use App\Controllers\Users\Users;//to test the autoloading function in Application.php
+//new Users;//to test the autoloading function in Application.php

@@ -19,6 +19,8 @@ class Application {
         //echo '<pre>', var_dump($file), '</pre>from Application.php<br><br>'; echo '<pre>', print_r($file), '</pre>from Application.php<br><br>';
         //echo '<br>Welcome<br>';
         $this->registerClasses();
+        $this->loadHelpers();
+        //pre($this->file);//Testing our pre() function in helpers.php
     }
     /**
      *Register classes in spl auto load register
@@ -41,14 +43,23 @@ class Application {
         //die;
         //The two main places of classes are: in Vendor Folder or in App Folder
         if (strpos($class, 'App') === 0) {//if the class has 'App' word in the beginning (App Folder)
-
+            $file = $this->file->to($class . '.php');
         } else {//Vendor Folder
-            $file = $this->file->toVendor($class . '.php');
-            die($file);//to print the $file
-            if ($this->file->exists($file)) {// $this->file will call the __get() magic method and returns a File Class Object (so that we can call the exists() function)
-                $this->file->require($file);
-            }
+            $file = $this->file->toVendor($class . '.php');// $this->file will call the __get() magic method because it's a non-existing property and returns a File Class object (so that we can call the toVendor() function which is a File Class function.)
+            //die($file);//to print the $file
         }
+        //Making sure that the class required is really existing like a file
+        if ($this->file->exists($file)) {// $this->file will call the __get() magic method because it's a non-existing property and returns a File Class object (so that we can call the exists() function which is a File Class function.)
+            $this->file->require($file);//$this->file is File Class object which can call require() which is a File Class function
+        }
+    }
+    /**
+     * Load Helpers File
+     *
+     * @return void
+     */
+    private function loadHelpers() {//Loading helpers.php
+        $this->file->require($this->file->toVendor('helpers.php'));
     }
     /**
      * Get Shared Value
