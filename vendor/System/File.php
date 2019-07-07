@@ -1,7 +1,7 @@
 <?php
 namespace System;
 class File {
-    //Handles all files and folders
+    //The class handles all files and folders
 
     /**
      *Directory Separator

@@ -23,6 +23,14 @@ class Application {
         //pre($this->file);//Testing our pre() function in helpers.php
     }
     /**
+     * Run The Application
+     *
+     * @return void
+     */
+    public function run() {
+
+    }
+    /**
      *Register classes in spl auto load register
      *
      * @return void
@@ -68,7 +76,26 @@ class Application {
      * @return mixed
      */
     public function get($key) {
-        return isset($this->container[$key]) ? $this->container[$key] : null;
+        //Check if the $key is stored in the container, if TRUE, retunt it, if FALSE, return NULL
+        //return isset($this->container[$key]) ? $this->container[$key] : null;
+        if (!$this->isSharing($key)) {
+            if ($this->isCoreAlias($key)) {
+                $this->share($key, $this->createNewCoreObject($key));
+            } else {
+                die('<strong>' . $key . '</strong> not found in application container from Application.php');
+            }
+        }
+        //return $this->isSharing($key) ? $this->container[$key] : null;
+        return $this->container[$key];
+    }
+    /**
+     * Determine if the given key is shared through Application
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function isSharing($key) {//Check if the $key is stored in the container
+        return isset($this->container[$key]);
     }
     /**
      * Get shared value dynamically
@@ -89,5 +116,49 @@ class Application {
     public function share($key, $value) {
         $this->container[$key] = $value;
         //echo '<pre>', var_dump($this->container), '</pre>from Application.php<br><br>'; echo '<pre>', print_r($this->container), '</pre>from Application.php<br><br>';
+    }
+    /**
+     * Get All Core Classes with its aliases
+     *
+     * @return array
+     */
+    private function coreClasses() {
+        return [
+            //'Alias'  => 'Namespace'
+            //Escaping is understood only by using Double Quotes and not by Single Quotes
+            'request'  => 'System\\Http\\Request',
+            'response' => 'System\\Http\\Response',
+            'session'  => 'System\\Session',
+            'cookie'   => 'System\\Cookie',
+            'load'     => 'System\\Loader',
+            'html'     => 'System\\Html',
+            'db'       => 'System\\Database',
+            'view'     => 'System\\View\\ViewFactory'
+        ];
+    }
+    /**
+     * Determine if the given key is an alias to core classes
+     *
+     * @param string $alias
+     * @return bool
+     */
+    private function isCoreAlias($alias) {
+        $coreClasses = $this->coreClasses();
+        //pre($coreClasses);
+        return isset($coreClasses[$alias]);
+    }
+    /**
+     * Create a new object for the core class based on the given alias
+     *
+     * @param string $alias
+     * @return object
+     */
+    private function createNewCoreObject($alias) {//This is called 'Lazy Loading' which means I don't create an object unless I need it! (Note: The object is created one time only and not many times).
+        $coreClasses = $this->coreClasses();
+        //pre($coreClasses);
+        $object = $coreClasses[$alias];
+        //pre($object);
+        //pre($this);
+        return new $object($this);//return a new object of the pre-existing class and passing $this (Application object) to the created object
     }
 }

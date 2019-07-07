@@ -19,3 +19,9 @@ $app = new Application($file);//Dependency Injection
 //new System\Test;//to test the autoloading function in Application.php
 //use App\Controllers\Users\Users;//to test the autoloading function in Application.php
 //new Users;//to test the autoloading function in Application.php
+//echo $app->file->to('public') . '<br>';
+//echo '<pre>', var_dump($app->isCoreAlias('db')), '</pre>';
+//echo '<pre>', var_dump($app->createNewCoreObject('db')), '</pre>';
+//$app->session->set('name', 'Hassan');
+
+$app->run();
