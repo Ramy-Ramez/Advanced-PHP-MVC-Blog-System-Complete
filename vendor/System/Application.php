@@ -28,7 +28,7 @@ class Application {
      * @return void
      */
     public function run() {
-
+        $this->session->start();//$this->session : session property is not an Application Class property so this will call __get() method and a Session object will be returned --- the Session object will be able to call the Session Class start() method
     }
     /**
      *Register classes in spl auto load register
@@ -80,7 +80,7 @@ class Application {
         //return isset($this->container[$key]) ? $this->container[$key] : null;
         if (!$this->isSharing($key)) {
             if ($this->isCoreAlias($key)) {
-                $this->share($key, $this->createNewCoreObject($key));
+                $this->share($key, $this->createNewCoreObject($key));//Create an object of the wanted class and store it in the Application $container
             } else {
                 die('<strong>' . $key . '</strong> not found in application container from Application.php');
             }

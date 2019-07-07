@@ -25,3 +25,4 @@ $app = new Application($file);//Dependency Injection
 //$app->session->set('name', 'Hassan');
 
 $app->run();
+//echo session_id() . '<br>';
