@@ -29,6 +29,7 @@ class Application {
      */
     public function run() {
         $this->session->start();//$this->session : session property is not an Application Class property so this will call __get() method and a Session object will be returned --- the Session object will be able to call the Session Class start() method
+        $this->request->prepareUrl();
     }
     /**
      *Register classes in spl auto load register
