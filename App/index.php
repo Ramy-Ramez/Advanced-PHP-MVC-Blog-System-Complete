@@ -6,7 +6,9 @@ $app = Application::getInstance();
 //pre($app);
 
 //Adding Routes:
-$app->route->add('/', 'Main/Home');//    '/' means Home  -----    We could write 'Main/Home@index' but not important
+//$app->route->add('/', 'Main/Home');//    '/' means Home  -----    We could write 'Main/Home@index' but not important
+$app->route->add('/', 'Home', 'POST');//    '/' means Home  -----    We could write 'Home@index' but not important
+// App\Controllers\HomeController extends Controller
 //Link Example:    /blog/posts/my-title-post/45549
 // :text is a-z 0-9 -
 $app->route->add('/posts/:text/:id', 'Posts/Post');

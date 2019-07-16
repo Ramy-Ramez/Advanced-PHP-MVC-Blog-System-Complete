@@ -55,11 +55,15 @@ class Application {
     public function run() {
         $this->session->start();//$this->session : session property is not an Application Class property so this will call __get() method and a Session object will be returned --- the Session object will be able to call the Session Class start() method
         $this->request->prepareUrl();
-        $this->file->require('App/index.php');//Requiring the index.php which in App Folder
+        $this->file->call('App/index.php');//Requiring the index.php which is in App Folder
         //$this->route->getProperRoute();
         //$route = $this->route->getProperRoute();
         //pre($route);
         list($controller, $method, $arguments) = $this->route->getProperRoute();
+        //$this->load->controller($controller);
+        //$this->load->controller($controller);
+        //Action = Controller@Method
+        $this->load->action($controller, $method, $arguments);
     }
     /**
      *Register classes in spl auto load register
@@ -93,7 +97,7 @@ class Application {
         }
         //Making sure that the class required is really existing like a file
         if ($this->file->exists($file)) {// $this->file will call the __get() magic method because it's a non-existing property and returns a File Class object (so that we can call the exists() function which is a File Class function.)
-            $this->file->require($file);//$this->file is File Class object which can call require() which is a File Class function
+            $this->file->call($file);//$this->file is File Class object which can call require() which is a File Class function
         }
     }
     /**
@@ -104,7 +108,7 @@ class Application {
     private function loadHelpers() {//Loading helpers.php
         //$this->file->require($this->file->toVendor('helpers.php'));
         //require $this->file->toVendor('helpers.php');
-        $this->file->require('vendor/helpers.php');
+        $this->file->call('vendor/helpers.php');
     }
     /**
      * Get Shared Value

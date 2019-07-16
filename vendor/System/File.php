@@ -40,7 +40,7 @@ class File {
      * @param string $file
      * @return void
      */
-    public function require($file) {//will be used in Application.php
+    public function call($file) {//will be used in Application.php
         //require $file;
         //echo $file . '<br>';
         require $this->to($file);
