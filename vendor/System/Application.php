@@ -10,17 +10,42 @@ class Application {
      */
     private $container = [];
     /**
+     * Application Object
+     *
+     * @var \System\Application
+     */
+    private static $instance;
+    /**
      *Constructor
      *
      * @param \System\File $file
      */
-    public function __construct(File $file) {//Type casting
+    //https://stackoverflow.com/questions/12553142/when-we-should-make-the-constructor-private-why-php
+    private function __construct(File $file) {//Type casting
+        //What's the purpose of using a private constructor?
+        //It ensures that there can be only one instance of a Class and provides a global access point to that instance and this is common with The Singleton Pattern.
+        //There are several scenarios in which you might want to make your constructor private. The common reason is that in some cases, you don't want outside code to call your constructor directly, but force it to use another method to get an instance of your class.
+        //Here the constructor function will be called through getInstance() function which in turn is called from index.php
         $this->share('file', $file);
         //echo '<pre>', var_dump($file), '</pre>from Application.php<br><br>'; echo '<pre>', print_r($file), '</pre>from Application.php<br><br>';
         //echo '<br>Welcome<br>';
         $this->registerClasses();
+        //static::$instance = $this;
         $this->loadHelpers();
         //pre($this->file);//Testing our pre() function in helpers.php
+    }
+    /**
+     * Get Application Instance
+     *
+     * @param \System\File $file
+     * @return \System\Application
+     */
+    public static function getInstance($file = null) {//this function is called from index.php and will call the __construct() function
+        if (is_null(static::$instance)) {
+            static::$instance = new static($file); //'new static' is the same as 'new self'
+            //This line will call the __construct() function
+        }
+        return static::$instance;
     }
     /**
      * Run The Application
@@ -30,6 +55,11 @@ class Application {
     public function run() {
         $this->session->start();//$this->session : session property is not an Application Class property so this will call __get() method and a Session object will be returned --- the Session object will be able to call the Session Class start() method
         $this->request->prepareUrl();
+        $this->file->require('App/index.php');//Requiring the index.php which in App Folder
+        //$this->route->getProperRoute();
+        //$route = $this->route->getProperRoute();
+        //pre($route);
+        list($controller, $method, $arguments) = $this->route->getProperRoute();
     }
     /**
      *Register classes in spl auto load register
@@ -52,9 +82,13 @@ class Application {
         //die;
         //The two main places of classes are: in Vendor Folder or in App Folder
         if (strpos($class, 'App') === 0) {//if the class has 'App' word in the beginning (App Folder)
-            $file = $this->file->to($class . '.php');
+            //$file = $this->file->to($class . '.php');
+            $file = $class . '.php';
+            //echo $file . '<br>';
         } else {//Vendor Folder
-            $file = $this->file->toVendor($class . '.php');// $this->file will call the __get() magic method because it's a non-existing property and returns a File Class object (so that we can call the toVendor() function which is a File Class function.)
+            //$file = $this->file->toVendor($class . '.php');// $this->file will call the __get() magic method because it's a non-existing property and returns a File Class object (so that we can call the toVendor() function which is a File Class function.)
+            $file = 'vendor/' . $class . '.php';
+            //echo $file . '<br>';
             //die($file);//to print the $file
         }
         //Making sure that the class required is really existing like a file
@@ -68,7 +102,9 @@ class Application {
      * @return void
      */
     private function loadHelpers() {//Loading helpers.php
-        $this->file->require($this->file->toVendor('helpers.php'));
+        //$this->file->require($this->file->toVendor('helpers.php'));
+        //require $this->file->toVendor('helpers.php');
+        $this->file->require('vendor/helpers.php');
     }
     /**
      * Get Shared Value
@@ -130,6 +166,7 @@ class Application {
             'request'  => 'System\\Http\\Request',
             'response' => 'System\\Http\\Response',
             'session'  => 'System\\Session',
+            'route'    => 'System\\Route',
             'cookie'   => 'System\\Cookie',
             'load'     => 'System\\Loader',
             'html'     => 'System\\Html',
@@ -160,6 +197,6 @@ class Application {
         $object = $coreClasses[$alias];
         //pre($object);
         //pre($this);
-        return new $object($this);//return a new object of the pre-existing class and passing $this (Application object) to the created object
+        return new $object($this);//return a new object of the pre-existing class and passing '$this' (Application object) to the created object
     }
 }

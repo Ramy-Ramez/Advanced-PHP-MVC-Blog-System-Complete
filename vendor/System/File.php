@@ -31,7 +31,8 @@ class File {
      * @return bool
      */
     public function exists($file) {
-        return file_exists($file);
+        //return file_exists($file);
+        return file_exists($this->to($file));
     }
     /**
      * Require the given file
@@ -39,8 +40,10 @@ class File {
      * @param string $file
      * @return void
      */
-    public function require($file) {
-        require $file;
+    public function require($file) {//will be used in Application.php
+        //require $file;
+        //echo $file . '<br>';
+        require $this->to($file);
     }
     /**
      * Generate full path to the given path in vendor folder

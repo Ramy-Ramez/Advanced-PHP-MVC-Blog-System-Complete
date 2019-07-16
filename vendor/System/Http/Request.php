@@ -12,7 +12,7 @@ class Request {
      *
      * @var string
      */
-    private $baseUrl;
+    private $baseUrl;//comes from prepareUrl() function here
     /**
      * Prepare url
      *
@@ -20,30 +20,30 @@ class Request {
      */
     public function prepareUrl() {
         //pre($_SERVER);//pre() function is in helpers.php
-        echo $this->server('SCRIPT_NAME') . '<br>';
+        //echo $this->server('SCRIPT_NAME') . '<br>';
         //We want to hide index.php from the link
         $script = dirname($this->server('SCRIPT_NAME'));
-        echo $script . '<br>';
+        //echo $script . '<br>';
         //We want to remove /blog from the link
         $requestUri = $this->server('REQUEST_URI');
-        echo $requestUri . '<br>';
-        var_dump(strpos($requestUri, '?'));//The offset of the '?' in $requestUri
+        //echo $requestUri . '<br>';
+        //var_dump(strpos($requestUri, '?'));//The offset of the '?' in $requestUri
         if (strpos($requestUri, '?') !== false) {//If there is a '?' in the URI (Example: blog/go/to/sleep/6?id=4)
             //pre(explode('?', $requestUri));//Returns TWO arrays
             list($requestUri, $queryString) = explode('?', $requestUri);
-            echo '<br>' . $requestUri . '<br>' . $queryString . '<br>';
+            //echo '<br>' . $requestUri . '<br>' . $queryString . '<br>';
         }
         //Refer to https://regex101.com/
         //Using the '/  /' delimiters gives an error here because $script (/blog) already starts with a '/', so there are two solutions: use '#   #' delimiters instead, or escape the '/' in '/blog' using a \
         //The two following regular expressions are CORRECT:
         //$requestUri = preg_replace('#^' . $script . '#', '', $requestUri);//We wanna remove 'blog' from the URI ('blog' is $script)
         //$requestUri = preg_replace('/^\\' . $script . '/', '', $requestUri);//We wanna remove 'blog' from the URI ('blog' is $script)
-        echo $requestUri . '<br>';
+        //echo $requestUri . '<br>';
         $this->url = preg_replace('#^' . $script . '#', '', $requestUri);//We wanna remove 'blog' from the URI ('blog' is $script)
-        echo $this->url;
-        pre($_SERVER);
+        //echo $this->url;
+        //pre($_SERVER);
         $this->baseUrl = $this->server('REQUEST_SCHEME') . '://' . $this->server('HTTP_HOST') . $script . '/';// http . :// . localhost . /blog . /
-        echo $this->baseUrl . '<br>';
+        //echo $this->baseUrl . '<br>';
     }
     /**
      * Get Value from _GET by the given key
@@ -88,7 +88,7 @@ class Request {
      *
      * @return string
      */
-    public function baseUrl() {
+    public function baseUrl() {//comes from the private property $baseUrl which in turn takes its value from prepareUrl() function
         return $this->baseUrl;
     }
     /**
