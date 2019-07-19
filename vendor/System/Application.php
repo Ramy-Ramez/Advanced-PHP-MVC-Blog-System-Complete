@@ -68,7 +68,7 @@ class Application {
         //pre($output);
         //echo $output;//Echoing an object will call the __toString() magic method in View.php
         $this->response->setOutput($output);// response is in the Core Classes
-        $this->response->send();//The last code to execute in our script
+        $this->response->send();//The last code to execute in our script (This code includes the sendOutput() function which is responsible for printing view files)
     }
     /**
      *Register classes in spl auto load register

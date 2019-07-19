@@ -38,12 +38,12 @@ class File {
      * Require the given file
      *
      * @param string $file
-     * @return void
+     * @return mixed
      */
     public function call($file) {//will be used in Application.php
         //require $file;
         //echo $file . '<br>';
-        require $this->to($file);
+        return require $this->to($file); // (return require test.php) will return any values that test.php page returns (If test.php returns an array, it will be returned here)
     }
     /**
      * Generate full path to the given path in vendor folder

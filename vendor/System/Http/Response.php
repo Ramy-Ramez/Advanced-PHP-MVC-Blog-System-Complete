@@ -88,8 +88,7 @@ class Response {
      *
      * @return void
      */
-    private function sendOutput()
-    {
+    private function sendOutput() {
         echo $this->content;//This is the code line which prints the content of the view files (HTML files)
     }
 }
