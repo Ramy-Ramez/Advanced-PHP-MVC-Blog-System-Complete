@@ -60,7 +60,7 @@ class Loader {
         $controller = $this->getControllerName($controller);
         //echo $controller . '<br>';
         if (!$this->hasController($controller)) {
-            $this->addConroller($controller);
+            $this->addController($controller);
         }
         return $this->getController($controller);
     }
@@ -79,7 +79,7 @@ class Loader {
      * @param string $controller
      * @return void
      */
-    private function addConroller($controller) {
+    private function addController($controller) {
         //echo 1;
         $object = new $controller($this->app);//Create a new object of the $controller and pass the $app object to the controller object
         //Home

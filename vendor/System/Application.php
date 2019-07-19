@@ -55,7 +55,7 @@ class Application {
     public function run() {
         $this->session->start();//$this->session : session property is not an Application Class property so this will call __get() method and a Session object will be returned --- the Session object will be able to call the Session Class start() method
         $this->request->prepareUrl();
-        $this->file->call('App/index.php');//Requiring the index.php which is in App Folder
+        $this->file->call('App/index.php');//Requiring the index.php which is in App Folder //$this->file returns a File Object because of the code line: $this->share('file', $file);  in the constructor function
         //$this->route->getProperRoute();
         //$route = $this->route->getProperRoute();
         //pre($route);
@@ -63,7 +63,12 @@ class Application {
         //$this->load->controller($controller);
         //$this->load->controller($controller);
         //Action = Controller@Method
-        $this->load->action($controller, $method, $arguments);
+        //$this->load->action($controller, $method, $arguments); //'load' is in the Core Classes
+        $output = (string) $this->load->action($controller, $method, $arguments); //'load' is in the Core Classes //(string) will call the __toString() magic method in View.php
+        //pre($output);
+        //echo $output;//Echoing an object will call the __toString() magic method in View.php
+        $this->response->setOutput($output);// response is in the Core Classes
+        $this->response->send();//The last code to execute in our script
     }
     /**
      *Register classes in spl auto load register
@@ -72,7 +77,7 @@ class Application {
      */
     private function registerClasses() {//This function is called from inside the __construct() function
         //From PHP Manual: If your autoload function is a class method, you can call spl_autoload_register with an array specifying the class and the method to run.
-        spl_autoload_register([$this, 'load']);//Any callback function must be public (   load() function must be public   )
+        spl_autoload_register([$this, 'load']);//Any callback function must be public (This means load() function must be public)
     }
     /**
      * Load Class through autoloading
