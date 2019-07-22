@@ -4,6 +4,7 @@ use PDO;
 use PDOException;
 class Database {
     //This class is fully responsible for handling all queries on database
+    // return $this; in class methods is used for 'Method Chaining'.
 
     /**
      * Application Object
@@ -31,7 +32,7 @@ class Database {
      *
      * @var array
      */
-    private $data = [];
+    private $data = [];//Data of INSERT or UPDATE
 
     /**
      * Bindings Container
@@ -147,8 +148,8 @@ class Database {
         try {
             //static::$connection = new PDO ('mysql:host='. $connectionData['server'] . ';dbname=' . $connectionData['dbname'], $connectionData['dbuser'], $connectionData['dbpass']);
             static::$connection = new PDO('mysql:host=' . $server . ';dbname=' . $dbname, $dbuser, $dbpass);
-            static::$connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-            static::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            static::$connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);//Makes the default form of the returned values from queries as OBJECTS
+            static::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);//Make the Errors as Exception (the default error is silent)
             static::$connection->exec('SET NAMES utf8');
         } catch (PDOException $e) {
             die($e->getMessage());
@@ -181,7 +182,7 @@ class Database {
 
         $this->selects = array_merge($this->selects, $selects);
 
-        return $this;
+        return $this;//'Method Chaining'
     }
 
     /**
@@ -194,7 +195,7 @@ class Database {
     {
         $this->joins[] = $join;
 
-        return $this;
+        return $this;//'Method Chaining'
     }
 
     /**
@@ -210,7 +211,7 @@ class Database {
 
         $this->offset = $offset;
 
-        return $this;
+        return $this;//'Method Chaining'
     }
 
     /**
@@ -224,7 +225,7 @@ class Database {
     {
         $this->orerBy = [$orderBy, $sort];
 
-        return $this;
+        return $this;//'Method Chaining'
     }
 
     /**
@@ -339,11 +340,9 @@ class Database {
      * @param string $table
      * @return $this
      */
-    public function table($table)
-    {
+    public function table($table) {
         $this->table = $table;
-
-        return $this;
+        return $this;//'Method Chaining'
     }
 
     /**
@@ -378,7 +377,7 @@ class Database {
 
         $this->reset();
 
-        return $this;
+        return $this;//'Method Chaining'
     }
 
     /**
@@ -388,19 +387,15 @@ class Database {
      * @param mixed $value
      * @return $this
      */
-    public function data($key, $value = null)
-    {
+    public function data($key, $value = null) {
         if (is_array($key)) {
             $this->data = array_merge($this->data, $key);
-
             $this->addToBindings($key);
         } else {
             $this->data[$key] = $value;
-
             $this->addToBindings($value);
         }
-
-        return $this;
+        return $this;//'Method Chaining'
     }
 
     /**
@@ -409,23 +404,16 @@ class Database {
      * @param string $table
      * @return $this
      */
-    public function insert($table = null)
-    {
-        if ($table) {
+    public function insert($table = null) {
+        if ($table) {//if someone wrote a table
             $this->table($table);
         }
-
         $sql = 'INSERT INTO ' . $this->table . ' SET ';
-
         $sql .= $this->setFields();
-
         $this->query($sql, $this->bindings);
-
         $this->lastId = $this->connection()->lastInsertId();
-
         $this->reset();
-
-        return $this;
+        return $this;//'Method Chaining'
     }
 
     /**
@@ -434,25 +422,23 @@ class Database {
      * @param string $table
      * @return $this
      */
-    public function update($table = null)
-    {
+    public function update($table = null) {
         if ($table) {
             $this->table($table);
         }
-
         $sql = 'UPDATE ' . $this->table . ' SET ';
-
         $sql .= $this->setFields();
-
         if ($this->wheres) {
+            //echo '<pre>', var_dump($this->wheres), '</pre>';
+            //echo '<pre>', var_dump(implode(' ', $this->wheres)), '</pre>';
             $sql .= ' WHERE ' . implode(' ' , $this->wheres);
+            //echo $sql . '<br>';
         }
-
+        //echo $sql . '<br>';
+        //pre($this->bindings);
         $this->query($sql, $this->bindings);
-
         $this->reset();
-
-        return $this;
+        return $this;//'Method Chaining'
     }
 
     /**
@@ -460,16 +446,13 @@ class Database {
      *
      * @return string
      */
-    private function setFields()
-    {
+    private function setFields() {
         $sql = '';
-
         foreach (array_keys($this->data) as $key) {
             $sql .= '`' . $key . '` = ? , ';
         }
-
-        $sql = rtrim($sql, ', ');
-
+        $sql = rtrim($sql, ', ');//remove the last comma
+        //echo $sql . '<br>';
         return $sql;
     }
 
@@ -487,8 +470,9 @@ class Database {
         $this->addToBindings($bindings);
 
         $this->wheres[] = $sql;
+        //pre($this->wheres);
 
-        return $this;
+        return $this;//'Method Chaining'
     }
 
     /**
@@ -506,7 +490,7 @@ class Database {
 
         $this->havings[] = $sql;
 
-        return $this;
+        return $this;//'Method Chaining'
     }
 
     /**
@@ -519,7 +503,7 @@ class Database {
     {
         $this->groupBy = $arguments;
 
-        return $this;
+        return $this;//'Method Chaining'
     }
 
     /**
@@ -527,32 +511,46 @@ class Database {
      *
      * @return \PDOStatement
      */
-    public function query()
-    {
+    public function query() {
+        /* //Explanation of the func_get_args() function:
+        //Please check: https://www.php.net/manual/en/functions.arguments.php#functions.variable-arg-list
+        //The Splat Operator (...)
+        function query() {//You could write it using the Splat Operator and remove the next line which contains the func_get_args() function like this:  function query(...$bindings) {
+            //If you would use the Splat Operator (...), remove the func_get_args() function
+            $bindings = func_get_args();
+            //echo '<pre>', var_dump($bindings), '</pre>';
+            $sql = array_shift($bindings);//Remove the 1st element of the array and store it in a variable
+            echo $sql . '<br>';
+            echo '<pre>', var_dump($bindings), '</pre>';
+            echo count($bindings) . '<br>';
+            if (count($bindings) == 1 AND is_array($bindings[0])) {
+                $bindings = $bindings[0];
+            }
+            echo '<pre>', var_dump($bindings), '</pre>';
+        }
+
+        //Both code lines are right:
+        //query('SELECT * FROM users WHERE id > ? AND id < ?', 1, 300);
+        query('SELECT * FROM users WHERE id > ? AND id < ?', [1, 300]);
+        */
         $bindings = func_get_args();
-
         $sql = array_shift($bindings);
-
         if (count($bindings) == 1 AND is_array($bindings[0])) {
             $bindings = $bindings[0];
         }
-
         try {
-            $query = $this->connection()->prepare($sql);
-
+            $query = $this->connection()->prepare($sql);//Or   $query = static::$connection->query($sql);
+            //pre($query);
             foreach ($bindings AS $key => $value) {
-                $query->bindValue($key + 1, _e($value));
+                //pre($key + 1); pre($value);
+                $query->bindValue($key + 1, _e($value));//_e() function is in helpers.php //1 is the 1st question mark placeholder '?' and 2 is the 2nd one in $query
             }
-
             $query->execute();
-
+            //pre($query);
             return $query;
         } catch (PDOException $e) {
-
             echo $sql;
-
             pre($this->bindings);
-
             die($e->getMessage());
         }
     }
@@ -573,8 +571,7 @@ class Database {
      * @param mixed $value
      * @return void
      */
-    private function addToBindings($value)
-    {
+    private function addToBindings($value) {
         // 0 => 1
         // 1 => 3
         // 2 => 2
