@@ -1,4 +1,5 @@
 <?php
+use System\Application;
 if (!function_exists('pre')) {
     /**
      * Visualize the given variable in browser
@@ -39,5 +40,21 @@ if (!function_exists('_e')) {// e stands for escaping (value filteration)
      */
     function _e($value) {
         return htmlspecialchars($value);//Prevents any HTML code to run
+    }
+}
+
+if (!function_exists('assets')) {// e stands for escaping (value filteration)
+    /**
+     * Generate full path for the given path in public directory (to require files like: CSS files, JS files, etc...)
+     *
+     * @param string $path
+     * @return string
+     */
+    function assets($path) {
+        //There are TWO ways to define $app:
+        //global $app; //We can use this function in anywhere where $app is already defined (like in HomeController.php)
+        //2nd way:
+        $app = Application::getInstance();
+        return $app->url->link('public/' . $path);
     }
 }

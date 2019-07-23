@@ -51,8 +51,13 @@ class HomeController extends Controller {
         echo 'Number of rows from the last fetch is <strong>' . $this->db->rows() . '</strong> From HomeController.php<br>';*/
 
 
-        $users = $this->load->model('Users');
+        //$users = $this->load->model('Users');
         //pre($users->all());
-        pre($users->get(1));
+        //pre($users->get(1));
+
+        //echo $this->url->link('/home') . '<br>';
+        //echo $this->url->link('/posts/my-post-title/13') . '<br>';
+        //$this->url->redirectTo('/posts/my-post-title/13');
+        echo assets('images/logo.png');
     }
 }
