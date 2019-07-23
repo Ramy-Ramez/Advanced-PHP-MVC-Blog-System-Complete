@@ -35,5 +35,17 @@ class HomeController extends Controller {
         //$this->db->data('email', 'shadyaskar@yahoo.com')->where('email = ?', 2)->update('users');//'Method Chaining'
         //$this->db->data('email', 'hassanzohdy@gmail.com')->where('id = ?', 1)->update('users');//'Method Chaining'
         //$this->db->data('first_name', 'hasan')->update('users');//'Method Chaining'
+        //$user = $this->db->select('*')->from('users')->orderBy('id', 'DESC')->fetch();
+        //pre($user);
+        //$users = $this->db->select('*')->from('users')->orderBy('id', 'DESC')->fetchAll();
+        //pre($users);
+        //$users = $this->db->select('*')->from('users')->where('id > ? AND id < ?', 1, 4)->orderBy('id', 'DESC')->fetchAll();
+        //pre($users);
+        //$this->db->where('id > ?', 3)->delete('users');
+        //pre($this->db->fetchAll('users'));
+        /*pre($this->db->where('id != ?', 2)->fetchAll('users'));
+        echo 'Number of rows from the last fetch is <strong>' . $this->db->rows() . '</strong> From HomeController.php<br>';
+        pre($this->db->fetchAll('users'));
+        echo 'Number of rows from the last fetch is <strong>' . $this->db->rows() . '</strong> From HomeController.php<br>';*/
     }
 }

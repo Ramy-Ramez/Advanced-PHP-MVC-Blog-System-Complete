@@ -205,12 +205,9 @@ class Database {
      * @param int $offset
      * @return $this
      */
-    public function limit($limit, $offset = 0)
-    {
+    public function limit($limit, $offset = 0) {
         $this->limit = $limit;
-
         $this->offset = $offset;
-
         return $this;//'Method Chaining'
     }
 
@@ -221,10 +218,8 @@ class Database {
      * @param string $sort
      * @return $this
      */
-    public function orderBy($orderBy, $sort = 'ASC')
-    {
+    public function orderBy($orderBy, $sort = 'ASC') {
         $this->orerBy = [$orderBy, $sort];
-
         return $this;//'Method Chaining'
     }
 
@@ -235,18 +230,13 @@ class Database {
      * @param string $table
      * @return \stdClass | null
      */
-    public function fetch($table = null)
-    {
+    public function fetch($table = null) {
         if ($table) {
             $this->table($table);
         }
-
         $sql = $this->fetchStatement();
-
         $result = $this->query($sql, $this->bindings)->fetch();
-
         $this->reset();
-
         return $result;
     }
 
@@ -256,22 +246,16 @@ class Database {
      * @param string $table
      * @return array
      */
-    public function fetchAll($table = null)
-    {
+    public function fetchAll($table = null) {
         if ($table) {
             $this->table($table);
         }
-
         $sql = $this->fetchStatement();
-
         $query = $this->query($sql, $this->bindings);
-
         $results = $query->fetchAll();
-
         $this->rows = $query->rowCount();
-
         $this->reset();
-
+        //pre($this->wheres);
         return $results;
     }
 
@@ -280,8 +264,7 @@ class Database {
      *
      * @return int
      */
-    public function rows()
-    {
+    public function rows() {
         return $this->rows;
     }
 
@@ -290,47 +273,50 @@ class Database {
      *
      * @return string
      */
-    private function fetchStatement()
-    {
+    private function fetchStatement() {
         $sql = 'SELECT ';
-
         if ($this->selects) {
+            //pre($this->selects);
+            //pre(implode(',' , $this->selects));
             $sql .= implode(',' , $this->selects);
         } else {
             $sql .= '*';
         }
-
         $sql .= ' FROM ' . $this->table . ' ';
-
         if ($this->joins) {
+            //pre($this->joins);
+            //pre(implode(',' , $this->joins));
             $sql .= implode(' ' , $this->joins);
         }
-
         if ($this->wheres) {
+            //pre($this->wheres);
+            //pre(implode(',' , $this->wheres));
             $sql .= ' WHERE ' . implode(' ', $this->wheres) . ' ';
         }
-
         if ($this->havings) {
+            //pre($this->havings);
+            //pre(implode(',' , $this->havings));
             $sql .= ' HAVING ' . implode(' ', $this->havings) . ' ';
         }
-
         if ($this->orerBy) {
+            //pre($this->orerBy);
+            //echo '<pre>', var_dump(implode(',' , $this->orerBy)), '<pre>';
             $sql .= ' ORDER BY ' . implode(' ' , $this->orerBy);
         }
-
         if ($this->limit) {
+            //pre($this->limit);
             $sql .= ' LIMIT ' . $this->limit;
         }
-
         if ($this->offset) {
+            //pre($this->offset);
             $sql .= ' OFFSET ' . $this->offset;
         }
 
         if ($this->groupBy) {
+            pre($this->groupBy);
+            //pre(implode(',' , $this->groupBy));
             $sql .= ' GROUP BY ' . implode(' ' , $this->groupBy);
         }
-
-
         return $sql;
     }
 
@@ -361,22 +347,16 @@ class Database {
      * @param string $table
      * @return $this
      */
-    public function delete($table = null)
-    {
+    public function delete($table = null) {
         if ($table) {
             $this->table($table);
         }
-
         $sql = 'DELETE FROM ' . $this->table . ' ';
-
         if ($this->wheres) {
             $sql .= ' WHERE ' . implode(' ' , $this->wheres);
         }
-
         $this->query($sql, $this->bindings);
-
         $this->reset();
-
         return $this;//'Method Chaining'
     }
 
@@ -461,17 +441,12 @@ class Database {
      *
      * @return $this
      */
-    public function where()
-    {
+    public function where() {
         $bindings = func_get_args();
-
         $sql = array_shift($bindings);
-
         $this->addToBindings($bindings);
-
         $this->wheres[] = $sql;
         //pre($this->wheres);
-
         return $this;//'Method Chaining'
     }
 
@@ -588,8 +563,7 @@ class Database {
      *
      * @return void
      */
-    private function reset()
-    {
+    private function reset() {//Refer to the last portion of the Video no. 15 to understand why we made this function
         $this->limit = null;
         $this->table = null;
         $this->offset = null;
