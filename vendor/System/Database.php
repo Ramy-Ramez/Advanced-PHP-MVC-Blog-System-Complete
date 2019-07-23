@@ -447,6 +447,7 @@ class Database {
         $this->addToBindings($bindings);
         $this->wheres[] = $sql;
         //pre($this->wheres);
+        //echo $sql . '<br>';
         return $this;//'Method Chaining'
     }
 
@@ -524,7 +525,7 @@ class Database {
             //pre($query);
             return $query;
         } catch (PDOException $e) {
-            echo $sql;
+            echo $sql . ' From Catch Exception in Database.php';
             pre($this->bindings);
             die($e->getMessage());
         }

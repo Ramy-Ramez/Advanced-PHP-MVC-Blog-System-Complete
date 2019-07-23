@@ -75,8 +75,7 @@ class Response {
      *
      * @return void
      */
-    private function sendHeaders()
-    {
+    private function sendHeaders() {
         foreach ($this->headers as $header => $value) {
             header($header . ':' . $value);//header() is a native PHP function. //Check the sent headers in the browser inspection tools in Network, you will find the sent headers from controllers (Example: 'year:1979') in Response Headers section.
             //echo $header . ':' . $value . '<br>';

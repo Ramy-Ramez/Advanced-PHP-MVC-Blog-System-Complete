@@ -35,6 +35,7 @@ class HomeController extends Controller {
         //$this->db->data('email', 'shadyaskar@yahoo.com')->where('email = ?', 2)->update('users');//'Method Chaining'
         //$this->db->data('email', 'hassanzohdy@gmail.com')->where('id = ?', 1)->update('users');//'Method Chaining'
         //$this->db->data('first_name', 'hasan')->update('users');//'Method Chaining'
+
         //$user = $this->db->select('*')->from('users')->orderBy('id', 'DESC')->fetch();
         //pre($user);
         //$users = $this->db->select('*')->from('users')->orderBy('id', 'DESC')->fetchAll();
@@ -43,9 +44,15 @@ class HomeController extends Controller {
         //pre($users);
         //$this->db->where('id > ?', 3)->delete('users');
         //pre($this->db->fetchAll('users'));
+
         /*pre($this->db->where('id != ?', 2)->fetchAll('users'));
         echo 'Number of rows from the last fetch is <strong>' . $this->db->rows() . '</strong> From HomeController.php<br>';
         pre($this->db->fetchAll('users'));
         echo 'Number of rows from the last fetch is <strong>' . $this->db->rows() . '</strong> From HomeController.php<br>';*/
+
+
+        $users = $this->load->model('Users');
+        //pre($users->all());
+        pre($users->get(1));
     }
 }

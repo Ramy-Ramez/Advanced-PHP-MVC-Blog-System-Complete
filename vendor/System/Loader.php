@@ -1,7 +1,6 @@
 <?php
 namespace System;
 use http\Encoding\Stream\Inflate;
-
 class Loader {
     //This class is responsible for loading Controllers "Classes" AND Models "Classes" located in App directory
 
@@ -106,6 +105,7 @@ class Loader {
         $controller = 'App\\Controllers\\' . $controller;
         return str_replace('/', '\\', $controller);
     }
+
     /**
      * Call the given model
      *
@@ -113,26 +113,37 @@ class Loader {
      * @return object
      */
     public function model($model) {
-
+        $model = $this->getModelName($model);
+        if (!$this->hasModel($model)) {
+            $this->addModel($model);
+        }
+        return $this->getModel($model);
     }
+
     /**
-     *Determine if the given class exists in the models container
+     * Determine if the given class|model exists
+     * in the models container
      *
      * @param string $model
      * @return bool
      */
     private function hasModel($model) {
-
+        return array_key_exists($model, $this->models);
     }
+
     /**
-     * Create new object for the given model and store it in models container
+     * Create new object for the given model and store it
+     * in models container
      *
      * @param string $model
      * @return void
      */
     private function addModel($model) {
-
+        $object = new $model($this->app);
+        // App\Models\HomeModel
+        $this->models[$model] = $object;
     }
+
     /**
      * Get the model object
      *
@@ -140,6 +151,18 @@ class Loader {
      * @return object
      */
     private function getModel($model) {
+        return $this->models[$model];
+    }
 
+    /**
+     * Get the full class name for the given model
+     *
+     * @param string $model
+     * @return string
+     */
+    private function getModelName($model) {
+        $model .= 'Model';
+        $model = 'App\\Models\\' . $model;
+        return str_replace('/', '\\', $model);
     }
 }
