@@ -64,6 +64,9 @@ class Application {
         //$this->load->controller($controller);
         //Action = Controller@Method
         //$this->load->action($controller, $method, $arguments); //'load' is in the Core Classes
+        //pre($controller);
+        //pre($method);
+        //pre($arguments);
         $output = (string) $this->load->action($controller, $method, $arguments); //'load' is in the Core Classes //(string) will call the __toString() magic method in View.php
         //pre($output);
         //echo $output;//Echoing an object will call the __toString() magic method in View.php
@@ -127,6 +130,7 @@ class Application {
         if (!$this->isSharing($key)) {
             if ($this->isCoreAlias($key)) {
                 $this->share($key, $this->createNewCoreObject($key));//Create an object of the wanted class and store it in the Application $container
+                //echo '<pre>', var_dump($this->createNewCoreObject($key)), '</pre>';
             } else {
                 die('<strong>' . $key . '</strong> not found in application container from Application.php');
             }
@@ -161,7 +165,7 @@ class Application {
      */
     public function share($key, $value) {
         $this->container[$key] = $value;
-        //echo '<pre>', var_dump($this->container), '</pre>from Application.php<br><br>'; echo '<pre>', print_r($this->container), '</pre>from Application.php<br><br>';
+        //echo '<pre>', var_dump($this->container), '</pre>From Application.php<br><br>'; //echo '<pre>', print_r($this->container), '</pre>From Application.php<br><br>';
     }
     /**
      * Get All Core Classes with its aliases

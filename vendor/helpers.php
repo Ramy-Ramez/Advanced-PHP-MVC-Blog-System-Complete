@@ -52,7 +52,7 @@ if (!function_exists('assets')) {// e stands for escaping (value filteration)
      */
     function assets($path) {
         //There are TWO ways to define $app:
-        //global $app; //We can use this function in anywhere where $app is already defined (like in HomeController.php)
+        //global $app; //We can use this assets() function in anywhere where $app is already defined (like in HomeController.php)
         //2nd way:
         $app = Application::getInstance();
         return $app->url->link('public/' . $path);

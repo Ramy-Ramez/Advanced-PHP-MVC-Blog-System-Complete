@@ -58,6 +58,6 @@ class HomeController extends Controller {
         //echo $this->url->link('/home') . '<br>';
         //echo $this->url->link('/posts/my-post-title/13') . '<br>';
         //$this->url->redirectTo('/posts/my-post-title/13');
-        echo assets('images/logo.png');
+        //echo assets('images/logo.png');
     }
 }

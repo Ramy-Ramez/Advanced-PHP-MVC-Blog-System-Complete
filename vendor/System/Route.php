@@ -1,7 +1,7 @@
 <?php
 namespace System;
 class Route {
-    //A class that receives and handles URL that comes from request and then defines which controller and method to call.
+    //A class that receives and handles URL that comes from request (handles the URL that the user typed and compares it to the regular expression) and then defines which controller and method to call.
     //$action is controller@method (If there is no method specified, it is considered as 'index' method by default)
 
     /**
@@ -38,7 +38,7 @@ class Route {
      * @param string $requestMethod
      * @return void
      */
-    public function add($url, $action, $requestMethod = 'GET') {
+    public function add($url, $action, $requestMethod = 'GET') {//This function is called from index.php (which is inside App Folder)
         $route = [
             'url'     => $url,
             'pattern' => $this->generatePattern($url),
@@ -111,8 +111,10 @@ class Route {
         // :id (\d+)
         //Any regular expression inside capturing group () will return in $matches array of preg_match() function
         $pattern .= str_replace([':text', ':id'], ['([a-zA-Z0-9-]+)', '(\d+)'], $url);//The parenthesized subpatterns() will return in $matches
+        //echo $pattern . '<br>';
         //End
         $pattern .= '$#';//Concatenation
+        //echo $pattern . '<br>';
         return $pattern;
     }
     /**
@@ -121,8 +123,10 @@ class Route {
      * @param string $action
      * @return string
      */
-    private function getAction($action) {
+    private function getAction($action) {//action = controller@method
         $action = str_replace('/', '\\', $action);//Because namespaces contains back slashes \ ONLY
-        return strpos($action, '@' !== false) ? $action : $action . '@index';//The $action = Controller@Method  so  if the action doesn't @method, put @index by default.
+        //echo strpos($action, '@') !== false ? $action : $action . '@index';//The $action = Controller@Method  so  if the action doesn't @method, put @index by default.
+        //echo '<br>';
+        return strpos($action, '@') !== false ? $action : $action . '@index';//The $action = Controller@Method  so  if the action doesn't @method, put @index by default.
     }
 }
