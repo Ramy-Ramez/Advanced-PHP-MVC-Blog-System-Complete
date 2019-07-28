@@ -2,6 +2,8 @@
 use System\Application;
 //White List Routes
 //This file is called from File.php
+//Action = Controller@Method
+//Note: Any Controller without method (like: Admin/Login) means it has an 'index' method (i.e. Admin/Login@index)
 
 $app = Application::getInstance();
 //pre($app);

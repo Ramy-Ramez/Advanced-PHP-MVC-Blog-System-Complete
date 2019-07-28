@@ -25,6 +25,6 @@ class ViewFactory {
      * @return \System\View\ViewInterface
      */
     public function render($viewPath, array $data = []) {//Type Casting
-        return new View($this->app->file, $viewPath, $data);//Create an object of the the View Class and pass those arguments to the View Class constructor function.
+        return new View($this->app->file, $viewPath, $data);//Create an object of the the View.php Class and pass those arguments to the View.php Class constructor function.
     }
 }

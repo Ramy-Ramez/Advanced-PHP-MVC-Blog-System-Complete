@@ -31,7 +31,7 @@ if (!function_exists('array_get')) {
     }
 }
 
-if (!function_exists('_e')) {// e stands for escaping (value filteration)
+if (!function_exists('_e')) {// e stands for escaping (value filtration)
     /**
      * Escape the given value
      *
@@ -43,7 +43,7 @@ if (!function_exists('_e')) {// e stands for escaping (value filteration)
     }
 }
 
-if (!function_exists('assets')) {// e stands for escaping (value filteration)
+if (!function_exists('assets')) {
     /**
      * Generate full path for the given path in public directory (to require files like: CSS files, JS files, etc...)
      *
@@ -56,5 +56,21 @@ if (!function_exists('assets')) {// e stands for escaping (value filteration)
         //2nd way:
         $app = Application::getInstance();
         return $app->url->link('public/' . $path);
+    }
+}
+
+if (!function_exists('url')) {
+    /**
+     * Generate full path for the given path
+     *
+     * @param string $path
+     * @return string
+     */
+    function url($path) {
+        //There are TWO ways to define $app:
+        //global $app; //We can use this assets() function in anywhere where $app is already defined (like in HomeController.php)
+        //2nd way:
+        $app = Application::getInstance();
+        return $app->url->link($path);
     }
 }

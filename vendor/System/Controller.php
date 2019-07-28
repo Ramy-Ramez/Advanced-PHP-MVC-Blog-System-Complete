@@ -10,6 +10,12 @@ abstract class Controller {
      */
     protected $app;
     /**
+     * Errors container
+     *
+     * @var array
+     */
+    protected $errors = [];
+    /**
      * Constructor
      *
      * @param \System\Application $app

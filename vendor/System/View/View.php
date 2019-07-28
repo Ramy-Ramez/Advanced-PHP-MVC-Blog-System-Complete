@@ -2,7 +2,8 @@
 namespace System\View;
 use System\File;
 class View implements ViewInterface {
-    //This class is responsible for calling views "files that will contain the html code" and passing some variables for it.
+    //This class is responsible for calling views "files (Requiring the views HTML files inside ِApp/Views Folder) that will contain the html code" and passing some variables for it.
+
     /**
      * File Object
      *
@@ -46,7 +47,8 @@ class View implements ViewInterface {
      * @return void
      */
     private function preparePath($viewPath) {
-        $relativeViewPath = 'App/Views/' . $viewPath . '.php';
+        $relativeViewPath = 'App/Views/' . $viewPath . '.php';//The Views folder
+        //echo $relativeViewPath . '<br>';
         $this->viewPath = $this->file->to($relativeViewPath);
         //echo $this->viewPath . ' From View.php<br>';
         if (! $this->viewFileExists($relativeViewPath)) {
@@ -70,6 +72,7 @@ class View implements ViewInterface {
             ob_start();
             //$my_name = 'Osama';
             extract($this->data);//We are putting $data in PHP Output Buffer
+            //echo $this->viewPath . '<br>';
             require $this->viewPath;//We are putting all the View HTML file content in PHP Output Buffer
             //For the previous line: We can't use $this->file->call($this->viewPath) because $data is out of the scope of the call() function. For better understanding:
             /*$array = ['age' => 88, 'name' => 'Hasan'];

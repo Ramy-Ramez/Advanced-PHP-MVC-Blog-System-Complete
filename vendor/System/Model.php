@@ -85,7 +85,7 @@ abstract class Model {
      * @param array $args
      * @return mixed
      */
-    public function __call($method, $args) {//Is called when we invoke inaccessible methods in object context
+    public function __call($method, $args) {//Is called when we invoke inaccessible 'Database.php' methods in object context (like: $this->where() )
         //echo $method . '<br>';
         //pre($args);
         return call_user_func_array([$this->app->db, $method], $args);//Calls the $method inside the Database.php Class, $args are the parameters which are passed from the inaccessible method

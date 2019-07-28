@@ -18,7 +18,7 @@ class Request {
      *
      * @return void
      */
-    public function prepareUrl() {
+    public function prepareUrl() {//This function is called from Application.php
         //pre($_SERVER);//pre() function is in helpers.php
         //echo $this->server('SCRIPT_NAME') . '<br>';
         //We want to hide index.php from the link
@@ -40,7 +40,7 @@ class Request {
         //$requestUri = preg_replace('/^\\' . $script . '/', '', $requestUri);//We wanna remove 'blog' from the URI ('blog' is $script)
         //echo $requestUri . '<br>';
         $this->url = preg_replace('#^' . $script . '#', '', $requestUri);//We wanna remove 'blog' from the URI ('blog' is $script)
-        //echo $this->url;
+        //echo $this->url . '<br>';
         //pre($_SERVER);
         $this->baseUrl = $this->server('REQUEST_SCHEME') . '://' . $this->server('HTTP_HOST') . $script . '/';// http . :// . localhost . /blog . /
         //echo $this->baseUrl . '<br>';
@@ -97,6 +97,7 @@ class Request {
      * @return string
      */
     public function url() {
+        //echo $this->url . '<br>';
         return $this->url;
     }
 }

@@ -46,7 +46,7 @@ class Loader {
         //To call a certain class method:   call_user_func_array([$class or $object, $classMethod], $parametersArray passed to the method)
         //Example 1: call_user_func_array(['App\\Controllers\\HomeController', 'index'], $arguments);//Using the Class name
         //Example 2: call_user_func_array([$this->controllers[$this->getControllerName($controller)], 'index'], $arguments);//Using the Class name
-        return call_user_func_array([$object, $method], $arguments);//Using the Object
+        return call_user_func_array([$object, $method], $arguments);//Using the Object (calling the $method inside the said $class)
     }
     /**
      * Call the given controller

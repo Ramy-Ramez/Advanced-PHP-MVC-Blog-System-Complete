@@ -26,6 +26,7 @@ class Url {
      * @return string
      */
     public function link($path) {
+        //echo $this->app->request->baseUrl() . trim($path, '/');
         return $this->app->request->baseUrl() . trim($path, '/');//baseUrl() function is in Request.php
     }
 

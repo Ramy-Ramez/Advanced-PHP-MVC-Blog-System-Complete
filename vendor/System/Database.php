@@ -368,7 +368,7 @@ class Database {
      * @return $this
      */
     public function data($key, $value = null) {
-        if (is_array($key)) {
+        if (is_array($key)) {//If $key is an array
             $this->data = array_merge($this->data, $key);
             $this->addToBindings($key);
         } else {
@@ -385,7 +385,7 @@ class Database {
      * @return $this
      */
     public function insert($table = null) {
-        if ($table) {//if someone wrote a table
+        if ($table) {//if someone wrote a table (used the table() function)
             $this->table($table);
         }
         $sql = 'INSERT INTO ' . $this->table . ' SET ';
