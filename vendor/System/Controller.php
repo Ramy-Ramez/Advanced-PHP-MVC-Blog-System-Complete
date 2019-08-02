@@ -23,6 +23,17 @@ abstract class Controller {
     public function __construct(Application $app) {
         $this->app = $app;
     }
+
+    /**
+     * Encode the given value to json
+     *
+     * @param mixed $data
+     * @return string
+     */
+    public function json($data) {
+        return json_encode($data);
+    }
+
     /**
      * Call shared application objects dynamically
      *

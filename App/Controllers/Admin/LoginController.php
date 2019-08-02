@@ -23,12 +23,12 @@ class LoginController extends Controller {
         //die;
         //pre($_COOKIE);
         $loginModel = $this->load->model('login');
-        if ($loginModel->isLogged()) {
+        if ($loginModel->isLogged()) {//If the user is already logged in, redirect them to the Admin Dashboard Page
             //pre($_COOKIE);
-            return $this->url->redirectTo('/admin');
+            return $this->url->redirectTo('/admin');//If the user is already logged in, redirect them to the Admin Dashboard Page
         }
         $data['errors'] = $this->errors;
-        return $this->view->render('admin/users/login', $data);//$this->view calls the ViewFactory.php Class which ,in turn, calls View.php object
+        return $this->view->render('admin/users/login', $data);//$this->view calls the ViewFactory.php Class which ,in turn, calls View.php object, in turn, requests the login.php page
     }
 
     /**
@@ -36,7 +36,7 @@ class LoginController extends Controller {
      *
      * @return mixed
      */
-    public function submit() {
+    public function submit() {//When submit button in login form is clicked
         if ($this->isValid()) {
             $loginModel = $this->load->model('Login');
             //echo '<pre>', var_dump($loginModel), '</pre>';
@@ -53,10 +53,22 @@ class LoginController extends Controller {
                 $this->session->set('login', $loggedInUser->code);//code column in the database
                 //pre($loginModel->user());
             }
-            return $this->url->redirectTo('/admin');
+            //return $this->url->redirectTo('/admin');
+            $json = [];
+            $json['success'] = 'Welcome Back <h1>' . $loggedInUser->first_name . '</h1>';//Welcome message
+            $json['redirect'] = $this->url->link('/admin');
+            return $this->json($json);//Convert the $json array to JSON (The response from server to the AJAX request)
         } else {
-            pre($this->errors);
-            return $this->index();
+            //pre($this->errors);
+            //return $this->index();
+
+            $json = [];
+            //$this->errors[] = 'Another error';
+            //$this->errors[] = 'More errors';
+            //$json['errors'] = $this->errors;
+            $json['errors'] = implode('<br>', $this->errors);
+            //pre($json['errors']);
+            return $this->json($json);//Convert the $json array to JSON (The response from server to the AJAX request)
         }
     }
 
@@ -70,9 +82,9 @@ class LoginController extends Controller {
         $email = $this->request->post('email');
         $password = $this->request->post('password');
         if (! $email) {
-            $this->errors[] = 'Please Insert Email address<br>';
+            $this->errors[] = 'Please Insert Email address';
         } elseif (!filter_var($email , FILTER_VALIDATE_EMAIL)) {
-            $this->errors[] = 'Please Insert Valid Email<br>';
+            $this->errors[] = 'Please Insert Valid Email';
         }
         if (!$password) {
             $this->errors[] = 'Please Insert Password';
@@ -82,8 +94,8 @@ class LoginController extends Controller {
             $loginModel = $this->load->model('Login');
             //pre($loginModel);
             if (!$loginModel->isValidLogin($email, $password)) {//If the entered data is wrong (don't match data in the database) //isValidLogin() function is in LoginModel.php
-                echo 'Error<br>';
-                $this->errors[] = 'Invalid Login Data<br>';
+                //echo 'Error<br>';
+                $this->errors[] = 'Invalid Login Data';
             }
         }
         //echo empty($this->errors);

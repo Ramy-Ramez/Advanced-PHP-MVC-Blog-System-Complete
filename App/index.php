@@ -21,6 +21,7 @@ $app->route->add('/admin/login', 'Admin/Login');
 $app->route->add('/admin/login/submit', 'Admin/Login@submit', 'POST');//method is 'POST' in order NOT for any user to be able to open that link from the address bar of browser //Submit form uses 'POST' method
 
 //Dashboard
+//If you write either /admin or /admin/dashboard in the address bar, you get the same page as they are aliases to each other
 $app->route->add('/admin', 'Admin/Dashboard');//Check another alias for the dashboard in the next line
 $app->route->add('/admin/dashboard', 'Admin/Dashboard');//Another alias for the Dashboard
 

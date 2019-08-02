@@ -70,9 +70,9 @@
 <script src="<?php echo assets('admin/bootstrap/js/bootstrap.min.js'); ?>"></script><!-- assets() function is in helpers.php -->
 <!-- iCheck -->
 <script src="<?php echo assets('admin/plugins/iCheck/icheck.min.js'); ?>"></script><!-- assets() function is in helpers.php -->
-<!--<script>
+<script>
     $(function () {
-        var flag = false;
+        var flag = false;//We use this flag to prevent submitting a request while there is another running...
         $('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue',
@@ -82,9 +82,9 @@
         loginResults = $('#login-results');
 
         $('#login-form').on('submit' , function (e) {
-            e.preventDefault();
+            e.preventDefault();//To prevent submitting the form from Reloading the page
 
-            if (flag === true) {
+            if (flag === true) {//return false means to stop the operation (stop being able to click submit) if there is already a running request
                 return false;
             }
 
@@ -94,29 +94,42 @@
 
             requestMethod = form.attr('method');
 
-            requestData = form.serialize();
-
+            requestData = form.serialize();//serialize() the data that will be sent to server
+            //console.log(requestData);
             $.ajax({
                 url: requestUrl,
                 type: requestMethod,
-                data: requestData,
-                dataType: 'json',
+                data: requestData,//Data sent from the form to server
+                dataType: 'json', //Data returned from server
                 beforeSend: function () {
-                    flag = true;
-                    $('button').attr('disabled' , true);
+                    flag = true;//We use this flag to prevent submitting a request while there is another running...
+                    $('button').attr('disabled' , true);//To prevent user from being able to click the button while there is a running request
                     loginResults.removeClass().addClass('alert alert-info').html('Logging...');
                 },
                 success: function (results) {
-                    if (results.errors) {
+                    //Here we have $json['success'], $json['redirect'], $json['errors'] from the LoginController.php
+                    if (results.errors) {//Refer to $json['errors'] in LoginController.php in submit() function
+                        /*errorsLength = results.errors.length;//How many errors in the array (Ex: 3 or 4,...)
+                        console.log(results.errors);
+                        console.log(errorsLength);
+                        loginResults.removeClass().addClass('alert alert-danger').html('');
+                        for (var i = 0; i <errorsLength; i++) {//How Many Errors in the Array
+                            loginResults.append('<li>' + results.errors[i] + '</li>');
+                                //console.log(results.errors[i]);
+                        }*/
+                        //console.log(results.errors);
+                        //console.log(results.errors.length);
                         loginResults.removeClass().addClass('alert alert-danger').html(results.errors);
-                        $('button').removeAttr('disabled');
-                        flag = false;
-                    } else if (results.success) {
+                        $('button').removeAttr('disabled');//To make the button clickable again if there is no a running request
+                        flag = false;//We use this flag to prevent submitting a request while there is another running...
+                    } else if (results.success) {//Refer to $json['success'] in LoginController.php in submit() function
                         loginResults.removeClass().addClass('alert alert-success').html(results.success);
 
-                        if (results.redirect) {
-                            window.location.href = results.redirect;
-                        }
+                        setTimeout(function () {
+                            if (results.redirect) {//Refer to $json['redirect'] in LoginController.php in submit() function
+                                window.location.href = results.redirect;//Redirection
+                            }
+                        }, 2000);
                     }
                 }
             });
@@ -124,6 +137,6 @@
         });
 
     });
-</script>-->
+</script>
 </body>
 </html>

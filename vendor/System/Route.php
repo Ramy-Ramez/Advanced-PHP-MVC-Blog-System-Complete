@@ -54,7 +54,7 @@ class Route {
      * @param string $url
      * @return void
      */
-    public function notFound($url) {
+    public function notFound($url) {//This function is called from index.php (in App Folder)
         $this->notFound = $url;
     }
     /**
@@ -64,6 +64,7 @@ class Route {
      */
     public function getProperRoute() {//This function is called from Application.php in run() function
         foreach ($this->routes as $route) {
+            //pre($this->routes);
             if ($this->isMatching($route['pattern'])) {
                 //echo $route['pattern'] . ' From getProperRoute() function in Route.php<br>';
                 $arguments = $this->getArgumentsFrom($route['pattern']);
@@ -74,6 +75,9 @@ class Route {
                 return [$controller, $method, $arguments];//Return an array which contains: $controller, $method, $arguments
             }
         }
+        //return $this->app->url->redirectTo('/404');//If someone wrote anything in the URL (like: http://localhost/blog/blabla) which is not added in our routes in index.php(in App Folder), redirect him to the 404 Page
+        return $this->app->url->redirectTo($this->notFound);//If someone wrote anything in the URL (like: http://localhost/blog/blabla) which is not added in our routes in index.php(in App Folder), redirect him to the 404 Page
+        //Because in index.php (in App folder), we have that code line:    $app->route->notFound('/404');
     }
     /**
      * Determine if the given pattern matches the current request url
@@ -82,6 +86,8 @@ class Route {
      * @return bool
      */
     private function isMatching($pattern) {
+        //echo $this->app->request->url() . '<br>';
+        //var_dump(preg_match($pattern, $this->app->request->url()));
         return preg_match($pattern, $this->app->request->url());//Compare the URL entered by user to the right regular expression
     }
     /**

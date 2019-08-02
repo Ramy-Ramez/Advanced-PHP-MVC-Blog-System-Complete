@@ -39,7 +39,9 @@ class Request {
         //$requestUri = preg_replace('#^' . $script . '#', '', $requestUri);//We wanna remove 'blog' from the URI ('blog' is $script)
         //$requestUri = preg_replace('/^\\' . $script . '/', '', $requestUri);//We wanna remove 'blog' from the URI ('blog' is $script)
         //echo $requestUri . '<br>';
-        $this->url = preg_replace('#^' . $script . '#', '', $requestUri);//We wanna remove 'blog' from the URI ('blog' is $script)
+        //$this->url = preg_replace('#^' . $script . '#', '', $requestUri);//We wanna remove 'blog' from the URI ('blog' is $script)
+        $this->url = rtrim(preg_replace('#^' . $script . '#', '', $requestUri), '/');//We wanna remove 'blog' from the URI ('blog' is $script) //We use rtrim() function because in index.php (in App folder), routes are added without '/' in the end of the route (If we wouldn't trim the '/', we would be redirected to 404 page).
+        //die($this->url);
         //echo $this->url . '<br>';
         //pre($_SERVER);
         $this->baseUrl = $this->server('REQUEST_SCHEME') . '://' . $this->server('HTTP_HOST') . $script . '/';// http . :// . localhost . /blog . /
