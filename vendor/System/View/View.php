@@ -46,7 +46,7 @@ class View implements ViewInterface {
      * @param string $viewPath
      * @return void
      */
-    private function preparePath($viewPath) {
+    private function preparePath($viewPath) {//This function is called from __construct() function
         $relativeViewPath = 'App/Views/' . $viewPath . '.php';//The Views folder
         //echo $relativeViewPath . '<br>';
         $this->viewPath = $this->file->to($relativeViewPath);
@@ -88,7 +88,7 @@ class View implements ViewInterface {
     /**
      * {@inheritDoc}
      */
-    public function __toString() {//Is called when you try to echo an object (When echoing the view in controllers)
+    public function __toString() {//Is called when you try to echo an object (When echoing the view in controllers)...Example: echo $view;
         //return 'Welcome From View.php<br>';
         return $this->getOutput();
     }

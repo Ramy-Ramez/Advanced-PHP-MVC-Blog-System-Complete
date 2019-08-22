@@ -1,5 +1,6 @@
 <?php
 namespace System;
+use Closure;//To use the PHP Closure Class
 class Application {
     //To store data (A container to store data)
 
@@ -164,6 +165,10 @@ class Application {
      * @return mixed
      */
     public function share($key, $value) {
+        if ($value instanceof Closure) {//If $value is a function (anonymous function) like sharing admin layout in index.php in App folder, we want to make it run (execute) automatically... Closure is the default class in PHP used to represent anonymous functions.
+            $value = call_user_func($value, $this);//We pass the Application Object($this) to the callback
+            //pre($value);
+        }
         $this->container[$key] = $value;
         //echo '<pre>', var_dump($this->container), '</pre>From Application.php<br><br>'; //echo '<pre>', print_r($this->container), '</pre>From Application.php<br><br>';
     }
@@ -211,6 +216,6 @@ class Application {
         $object = $coreClasses[$alias];
         //pre($object);
         //pre($this);
-        return new $object($this);//return a new object of the pre-existing class and passing '$this' (Application object) to the created object
+        return new $object($this);//return a new object of the pre-existing class and passing '$this' (the Application object) to the created object
     }
 }

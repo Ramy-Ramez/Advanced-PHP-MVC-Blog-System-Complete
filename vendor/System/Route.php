@@ -39,6 +39,7 @@ class Route {
      * @return void
      */
     public function add($url, $action, $requestMethod = 'GET') {//This function is called from index.php (which is inside App Folder)
+        //$action = Controller@Method
         $route = [
             'url'     => $url,
             'pattern' => $this->generatePattern($url),
@@ -65,7 +66,7 @@ class Route {
     public function getProperRoute() {//This function is called from Application.php in run() function
         foreach ($this->routes as $route) {
             //pre($this->routes);
-            if ($this->isMatching($route['pattern'])) {
+            if ($this->isMatching($route['pattern']) AND $this->isMatchingRequestMethod($route['method'])) {
                 //echo $route['pattern'] . ' From getProperRoute() function in Route.php<br>';
                 $arguments = $this->getArgumentsFrom($route['pattern']);
                 //pre($arguments);
@@ -90,6 +91,18 @@ class Route {
         //var_dump(preg_match($pattern, $this->app->request->url()));
         return preg_match($pattern, $this->app->request->url());//Compare the URL entered by user to the right regular expression
     }
+
+    /**
+     * Determine if the current request method equals
+     * the given route method
+     *
+     * @param string $routeMethod
+     * @return bool
+     */
+    private function isMatchingRequestMethod($routeMehtod) {
+        return $routeMehtod == $this->app->request->method();
+    }
+
     /**
      * Get Arguments from the current request url based on the given pattern
      *

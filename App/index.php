@@ -5,7 +5,7 @@ use System\Application;
 //Action = Controller@Method
 //Note: Any Controller without method (like: Admin/Login) means it has an 'index' method (i.e. Admin/Login@index)
 
-$app = Application::getInstance();
+$app = Application::getInstance();//Get an instance (object) of Application.php Class
 //pre($app);
 
 //Adding Routes:
@@ -19,6 +19,17 @@ $app = Application::getInstance();
 //Admin Routes
 $app->route->add('/admin/login', 'Admin/Login');
 $app->route->add('/admin/login/submit', 'Admin/Login@submit', 'POST');//method is 'POST' in order NOT for any user to be able to open that link from the address bar of browser //Submit form uses 'POST' method
+
+//Share admin layout
+$app->share('adminLayout', function ($app) {//Share admin layout in all the application to be able to use the layout anywhere (Here $value is an anonymous function so this would use the PHP built-in Closure Class.. Refer to share() function in Application.php)
+    return $app->load->controller('Admin/Common/Layout');
+});
+//echo '<pre>', var_dump($app), '</pre>';
+
+//Admin Categories Routes
+$app->route->add('/admin/categories', 'Admin/Categories');
+$app->route->add('/admin/categories/add', 'Admin/Categories@add', 'POST');
+$app->route->add('/admin/categories/submit', 'Admin/Categories@submit', 'POST');
 
 //Dashboard
 //If you write either /admin or /admin/dashboard in the address bar, you get the same page as they are aliases to each other
