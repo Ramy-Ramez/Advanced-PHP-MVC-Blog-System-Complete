@@ -181,16 +181,17 @@ class Application {
         return [
             //'Alias'  => 'Namespace'
             //Escaping is understood only by using Double Quotes and not by Single Quotes
-            'request'  => 'System\\Http\\Request',
-            'response' => 'System\\Http\\Response',
-            'session'  => 'System\\Session',
-            'route'    => 'System\\Route',
-            'cookie'   => 'System\\Cookie',
-            'load'     => 'System\\Loader',
-            'html'     => 'System\\Html',
-            'db'       => 'System\\Database',
-            'view'     => 'System\\View\\ViewFactory',
-            'url'      => 'System\\Url',
+            'request'   => 'System\\Http\\Request',
+            'response'  => 'System\\Http\\Response',
+            'session'   => 'System\\Session',
+            'route'     => 'System\\Route',
+            'cookie'    => 'System\\Cookie',
+            'load'      => 'System\\Loader',
+            'html'      => 'System\\Html',
+            'db'        => 'System\\Database',
+            'view'      => 'System\\View\\ViewFactory',
+            'url'       => 'System\\Url',
+            'validator' => 'System\\Validation'
         ];
     }
     /**

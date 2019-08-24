@@ -35,6 +35,7 @@ $app->route->add('/admin/categories/submit', 'Admin/Categories@submit', 'POST');
 //If you write either /admin or /admin/dashboard in the address bar, you get the same page as they are aliases to each other
 $app->route->add('/admin', 'Admin/Dashboard');//Check another alias for the dashboard in the next line
 $app->route->add('/admin/dashboard', 'Admin/Dashboard');//Another alias for the Dashboard
+$app->route->add('/admin/submit', 'Admin/Dashboard@submit', 'POST');
 
 //admin => users
 $app->route->add('/admin/users', 'Admin/Users');
