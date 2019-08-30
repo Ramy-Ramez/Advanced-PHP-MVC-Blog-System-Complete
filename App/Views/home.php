@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<?php echo 'Hello, World! My name is <strong>' . $my_name . '</strong> From home.php<br>';?>
+<?php echo 'Hello, World! My name is <strong>' . $my_name . '</strong> From home.php<br>'; ?>
 
 </body>
 </html>

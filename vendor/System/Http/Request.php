@@ -13,6 +13,13 @@ class Request {
      * @var string
      */
     private $baseUrl;//comes from prepareUrl() function here
+
+    /**
+     * Uploaded Files Container
+     * @var array
+     */
+    private $files = [];
+
     /**
      * Prepare url
      *
@@ -44,6 +51,9 @@ class Request {
         //die($this->url);
         //echo $this->url . '<br>';
         //pre($_SERVER);
+        if (!$this->url) {//If the url is empty
+            $this->url = '/';
+        }
         $this->baseUrl = $this->server('REQUEST_SCHEME') . '://' . $this->server('HTTP_HOST') . $script . '/';// http . :// . localhost . /blog . /
         //echo $this->baseUrl . '<br>';
     }
@@ -67,6 +77,22 @@ class Request {
     public function post($key, $default = null) {
         return array_get($_POST, $key, $default);//array_get() function is in helpers.php
     }
+
+    /**
+     * Get the uploaded file object for the given input
+     *
+     * @param string $input
+     * @return \System\Http\UploadedFile
+     */
+    public function file($input) {
+        if (isset($this->files[$input])) {
+            return $this->files[$input];
+        }
+        $uploadedFile = new UploadedFile($input);
+        $this->files[$input] = $uploadedFile;
+        return $this->files[$input];
+    }
+
     /**
      * Get Value from _SERVER by the given key
      *

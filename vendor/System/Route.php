@@ -64,6 +64,8 @@ class Route {
      * @return array
      */
     public function getProperRoute() {//This function is called from Application.php in run() function
+        /*echo $this->app->request->url() . '<br>';
+        die;*/
         foreach ($this->routes as $route) {
             //pre($this->routes);
             if ($this->isMatching($route['pattern']) AND $this->isMatchingRequestMethod($route['method'])) {
@@ -99,8 +101,8 @@ class Route {
      * @param string $routeMethod
      * @return bool
      */
-    private function isMatchingRequestMethod($routeMehtod) {
-        return $routeMehtod == $this->app->request->method();
+    private function isMatchingRequestMethod($routeMethod) {
+        return $routeMethod == $this->app->request->method();
     }
 
     /**

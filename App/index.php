@@ -15,6 +15,9 @@ $app = Application::getInstance();//Get an instance (object) of Application.php 
 //Link Example:    /blog/posts/my-title-post/45549
 // :text is a-z 0-9 -
 //$app->route->add('/posts/:text/:id', 'Posts/Post');
+//echo UPLOAD_ERR_OK;
+
+$app->route->add('/', 'Home');//Home Page
 
 //Admin Routes
 $app->route->add('/admin/login', 'Admin/Login');
