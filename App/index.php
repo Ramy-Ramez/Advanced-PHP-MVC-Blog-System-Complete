@@ -29,11 +29,6 @@ $app->share('adminLayout', function ($app) {//Share admin layout in all the appl
 });
 //echo '<pre>', var_dump($app), '</pre>';
 
-//Admin Categories Routes
-$app->route->add('/admin/categories', 'Admin/Categories');
-$app->route->add('/admin/categories/add', 'Admin/Categories@add', 'POST');
-$app->route->add('/admin/categories/submit', 'Admin/Categories@submit', 'POST');
-
 //Dashboard
 //If you write either /admin or /admin/dashboard in the address bar, you get the same page as they are aliases to each other
 $app->route->add('/admin', 'Admin/Dashboard');//Check another alias for the dashboard in the next line
@@ -71,11 +66,11 @@ $app->route->add('/admin/comments/delete/:id', 'Admin/Comments@delete');
 
 //admin => categories
 $app->route->add('/admin/categories', 'Admin/Categories');
-$app->route->add('/admin/categories/add', 'Admin/Categories@add');
+$app->route->add('/admin/categories/add', 'Admin/Categories@add', 'POST');
 $app->route->add('/admin/categories/submit', 'Admin/Categories@submit', 'POST');//Submitting add //method is 'POST' in order NOT for any user to be able to open that link from the address bar of browser //Submit form uses 'POST' method
-$app->route->add('/admin/categories/edit/:id', 'Admin/Categories@edit');//Refer back to the generatePattern() function in Route.php which replaces the :id with a Regular Expression
+$app->route->add('/admin/categories/edit/:id', 'Admin/Categories@edit', 'POST');//Refer back to the generatePattern() function in Route.php which replaces the :id with a Regular Expression
 $app->route->add('/admin/categories/save/:id', 'Admin/Categories@save', 'POST');//method is 'POST' in order NOT for any user to be able to open that link from the address bar of browser //Submit form uses 'POST' method
-$app->route->add('/admin/categories/delete/:id', 'Admin/Categories@delete');
+$app->route->add('/admin/categories/delete/:id', 'Admin/Categories@delete', 'POST');
 
 //Admin settings (like: Contact Us data, site condition (under maintenance))
 $app->route->add('admin/settings', 'Admin/Settings');

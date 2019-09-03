@@ -16,6 +16,19 @@ if (!function_exists('pre')) {
     }
 }
 
+if (!function_exists('pred')) {//pre die
+    /**
+     * Visualize the given variable in browser and exit the application
+     *
+     * @param mixed $var
+     * @return void
+     */
+    function pred($var) {
+        pre($var);
+        die;
+    }
+}
+
 if (!function_exists('array_get')) {
     /**
      * Get the value from the given array for the given key if found

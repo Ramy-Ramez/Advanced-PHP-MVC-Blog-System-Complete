@@ -10,8 +10,13 @@ class CategoriesController extends Controller {
     public function index() {
         //pre($this->adminLayout);
         $this->html->setTitle('Categories');
-        $view = $this->view->render('admin/categories/list');//$this->view returns a ViewFactory.php Object (Refer to the coreClasses() function in Application.php class)...and $view is a View.php Object (returned from render() function)
+        //$view = $this->view->render('admin/categories/list');//$this->view returns a ViewFactory.php Object (Refer to the coreClasses() function in Application.php class)...and $view is a View.php Object (returned from render() function)
         //pre($view);
+        $data['categories'] = $this->load->model('Categories')->all();
+
+        $data['success'] = $this->session->has('success') ? $this->session->pull('success') : null;
+
+        $view = $this->view->render('admin/categories/list', $data);
         return $this->adminLayout->render($view);//$view is a View.php Object //$this->adminLayout returns a LayoutController.php class Object (Refer to share() function index.php in App folder)
     }
 
@@ -22,8 +27,9 @@ class CategoriesController extends Controller {
      */
     public function add() {
         //return '<h1>Welcome From CategoriesController.php</h1>';
-        $data['action'] = $this->url->link('/admin/categories/submit');
-        return $this->view->render('admin/categories/form', $data);
+        //$data['action'] = $this->url->link('/admin/categories/submit');
+        //return $this->view->render('admin/categories/form', $data);
+        return $this->form();
     }
 
     /**
@@ -32,7 +38,129 @@ class CategoriesController extends Controller {
      * @return string | json
      */
     public function submit() {
-        $json['success'] = 'Done';
+        //$json['success'] = 'Done';
+        $json = [];
+
+        if ($this->isValid()) {
+            // it means there are no errors in form validation
+            $this->load->model('Categories')->create();
+
+            $json['success'] = 'Category Has Been Created Successfully';
+
+            $json['redirectTo'] = $this->url->link('/admin/categories');
+        } else {
+            // it means there are errors in form validation
+            $json['errors'] = $this->validator->flattenMessages();
+        }
         return $this->json($json);
     }
+
+
+    /**
+     * Display Edit Form
+     *
+     * @param int $id
+     * @return string
+     */
+    public function edit($id)
+    {
+        $categoriesModel = $this->load->model('Categories');
+
+        if (! $categoriesModel->exists($id)) {
+            return $this->url->redirectTo('/404');
+        }
+
+        $category = $categoriesModel->get($id);
+
+        return $this->form($category);
+    }
+
+    /**
+     * Display Form
+     *
+     * @param \stdClass $category
+     * @return object
+     */
+    private function form($category = null)
+    {
+        if ($category) {
+            // editing form
+            $data['target'] = 'edit-category-' . $category->id;
+
+            $data['action'] = $this->url->link('/admin/categories/save/' . $category->id);
+
+            $data['heading'] = 'Edit ' . $category->name;
+        } else {
+            // adding form
+            $data['target'] = 'add-category-form';
+
+            $data['action'] = $this->url->link('/admin/categories/submit');
+
+            $data['heading'] = 'Add New Category';
+        }
+
+        $data['name'] = $category ? $category->name : null;
+        $data['status'] = $category ? $category->status : 'enabled';
+
+        return $this->view->render('admin/categories/form', $data);
+    }
+
+    /**
+     * Submit for creating new category
+     *
+     * @return string | json
+     */
+    public function save($id)
+    {
+        $json = [];
+
+        if ($this->isValid()) {
+            // it means there are no errors in form validation
+            $this->load->model('Categories')->update($id);
+
+            $json['success'] = 'Category Has Been Updated Successfully';
+
+            $json['redirectTo'] = $this->url->link('/admin/categories');
+        } else {
+            // it means there are errors in form validation
+            $json['errors'] = $this->validator->flattenMessages();
+            //echo 'error<br>';
+        }
+
+        return $this->json($json);
+    }
+
+    /**
+     * Delete Record
+     *
+     * @param int $id
+     * @return mixed
+     */
+    public function delete($id)
+    {
+        $categoriesModel = $this->load->model('Categories');
+
+        if (! $categoriesModel->exists($id)) {
+            return $this->url->redirectTo('/404');
+        }
+
+        $categoriesModel->delete($id);
+
+        $json['success'] = 'Category Has Been Deleted Successfully';
+
+        return $this->json($json);
+    }
+
+    /**
+     * Validate the form
+     *
+     * @return bool
+     */
+    private function isValid()
+    {
+        $this->validator->required('name', 'Category Name is Required');
+
+        return $this->validator->passes();
+    }
+
 }
